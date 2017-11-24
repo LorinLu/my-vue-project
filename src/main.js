@@ -59,7 +59,17 @@ axios.defaults.withCredentials = true;
 // 5.0.2 将axios对象绑定到Vue的原型属性 $ajax上，将来在任何组件中均可以通过this.$ajax中的get(),post() 就可以发出ajax请求了
 Vue.prototype.$ajax = axios;
 
-// 6.0 实例化vue对象
+
+// 6.0 定义一个全局过滤器用来格式化日期
+Vue.filter('datefmt',(input)=>{
+    var date = new Date(input);
+    var y = date.getFullYear();
+    var m = date.getMonth() +1 ;
+    var d = date.getDate();
+    return y + '-' + m + '-' + d;
+});
+
+// 7.0 实例化vue对象
 new Vue({
     el:'#app',
     router,  //绑定路由对象使它生效
