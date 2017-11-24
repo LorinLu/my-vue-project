@@ -91,6 +91,52 @@
                 </div>
             </div>
         </div>
+
+        <!-- 分类下面的商品列表展示 -->
+        <div v-for="item in grouplist" :key="item.level1cateid" class="section">
+
+            <!--子类-->
+            <div class="main-tit">
+                <h2 v-text="item.catetitle"></h2>
+                <p>
+                    <a v-for="subitem in item.level2catelist" :key="subitem.subcateid" href="/goods/43.html">
+                     {{subitem.subcatetitle}}    
+                    </a>
+                    <a href="/goods/40.html">更多
+                        <i>+</i>
+                    </a>
+                </p>
+            </div>
+            <!--/子类-->
+            <div class="wrapper clearfix">
+                <div class="wrap-box">
+                    <ul class="img-list">
+
+                        <li v-for="dataitem in item.datas">
+                            <a href="/goods/show-91.html">
+                                <div class="img-box">
+                                    <img :src="dataitem.img_url">
+                                </div>
+                                <div class="info">
+                                    <h3 v-text="dataitem.artTitle"></h3>
+                                    <p class="price">
+                                        <b>¥{{dataitem.sell_price}}</b>元</p>
+                                    <p>
+                                        <strong>库存 {{dataitem.stock_quantity}}</strong>
+                                        <span>市场价：
+                                            <s>{{dataitem.market_price}}</s>
+                                        </span>
+                                    </p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        
+
     </div>
 </template>
 
@@ -100,13 +146,25 @@
             return {
                 // 负责存储商品列表页面的顶部区域的数据
                 // 格式： {catelist: 分类数据数组,sliderlist: 轮播图数据数组 ,toplist:推荐商品数据数组 }
-                topinfo: {}
+                topinfo: {},
+
+                grouplist:[] //用来存储页面底部的分类中的商品数据
             }
         },
         mounted() {
             this.gettoplist();
+
+            this.getgrouplist();
         },
         methods: {
+            // 2.0 获取页面底部的商品数据
+            getgrouplist(){
+                var url ="/site/goods/getgoodsgroup";
+                this.$ajax.get(url).then(res=>{
+                  this.grouplist =  res.data.message;
+                });
+            },
+            // 1.0 获取页面顶部三块区域的数据
             gettoplist() {
                 var url = '/site/goods/gettopdata/goods';
                 this.$ajax.get(url).then(res => {
@@ -117,12 +175,12 @@
     }
 </script>
 <style>
-   .el-carousel__container {
+    .el-carousel__container {
         height: 368px;
     }
 
     .el-carousel__item h3 {
-        color:red;
+        color: red;
         font-size: 18px;
         opacity: 0.75;
         line-height: 50px;
