@@ -9,7 +9,14 @@ var webpack = require('webpack');
 
 module.exports = {
     // 1.0 指定webpack的打包的入口文件
-    entry: './src/main.js',
+    // entry: './src/main.js',
+    entry :{
+        build:'./src/main.js',
+        vendor1:['vue','vue-router','vuex','axios'],
+        vendor2:['v-distpicker'],
+        vendor3:['element-ui'],
+        vendor3:['jquery']
+    },
 
     // 2.0 指定打包完成的以后的输出文件
     output: {
@@ -18,7 +25,8 @@ module.exports = {
         // path.join(__dirname,'/dist'):在老师电脑上的输出结果：F:\广州13期Vue基础和项目\基础第三天\代码day03\03webpack学习\dist
         path: path.join(__dirname, '/dist'),
         // 这个文件名称可以自定义
-        filename: 'build.js'
+        // filename: 'build.js'
+        filename: '[name].js'
     },
     // 导入jquery这个包
     resolve: {
@@ -84,6 +92,10 @@ module.exports = {
         new webpack.ProvidePlugin({
             $:  "jquery",
             jQuery:  "jquery"
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name:["vendor4","vendor3","vendor2","vendor1"],
+            minChunks: Infinity
         })
     ]
 }
